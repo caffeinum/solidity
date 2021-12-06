@@ -1284,11 +1284,6 @@ workflows:
           project: colony
           compile_only: 1
           nodejs_version: '14'
-      - t_ems_ext:
-          <<: *workflow_emscripten
-          name: t_ems_compile_ext_gnosis
-          project: gnosis
-          compile_only: 1
 
       - t_ems_ext:
           <<: *workflow_emscripten
