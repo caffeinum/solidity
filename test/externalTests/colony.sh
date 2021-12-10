@@ -35,12 +35,16 @@ function colony_test
     local repo="https://github.com/solidity-external-tests/colonyNetwork.git"
     local branch=develop_080
     local config_file="truffle.js"
+
+    local compile_only_presets=(
+        ir-no-optimize            # Compiles but tests run out of gas
+        ir-optimize-evm-only      # Compiles but tests run out of gas
+        legacy-no-optimize        # Compiles but tests run out of gas
+        legacy-optimize-evm-only  # Compiles but tests run out of gas
+    )
     local settings_presets=(
-        #ir-no-optimize            # Compiles but tests run out of gas
-        #ir-optimize-evm-only      # Compiles but tests run out of gas
+        "${compile_only_presets[@]}"
         ir-optimize-evm+yul
-        #legacy-no-optimize        # Compiles but tests run out of gas
-        #legacy-optimize-evm-only  # Compiles but tests run out of gas
         legacy-optimize-evm+yul
     )
 
@@ -65,7 +69,7 @@ function colony_test
     force_solc_modules "${DIR}/solc"
 
     for preset in $selected_optimizer_presets; do
-        truffle_run_test "$config_file" "${DIR}/solc" "$preset" compile_fn test_fn
+        truffle_run_test "$config_file" "${DIR}/solc" "$preset" "${compile_only_presets[*]}" compile_fn test_fn
     done
 }
 

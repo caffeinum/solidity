@@ -35,7 +35,10 @@ function gnosis_safe_test
     local repo="https://github.com/solidity-external-tests/safe-contracts.git"
     local branch=development_080
     local config_file="truffle-config.js"
+
+    local compile_only_presets=()
     local settings_presets=(
+        "${compile_only_presets[@]}"
         #ir-no-optimize            # "YulException: Variable var_call_430_mpos is 1 slot(s) too deep inside the stack."
         #ir-optimize-evm-only      # "YulException: Variable var_call_430_mpos is 1 slot(s) too deep inside the stack."
         ir-optimize-evm+yul
@@ -62,7 +65,7 @@ function gnosis_safe_test
     force_solc_modules "${DIR}/solc"
 
     for preset in $selected_optimizer_presets; do
-        truffle_run_test "$config_file" "${DIR}/solc" "$preset" compile_fn test_fn
+        truffle_run_test "$config_file" "${DIR}/solc" "$preset" "${compile_only_presets[*]}" compile_fn test_fn
     done
 }
 
