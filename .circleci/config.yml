@@ -1382,4 +1382,5 @@ workflows:
           <<: *workflow_emscripten
           name: t_ems_test_ext_colony
           project: colony
+          nodejs_version: '14'
           resource_class: medium
