@@ -18,7 +18,7 @@ def read_file(file_name):
         with open(file_name, "r", encoding="latin-1" if is_latin else ENCODING) as f:
             content = f.read()
     finally:
-        if content == None:
+        if content is None:
             print(f"Error reading: {file_name}")
     return content
 
@@ -44,7 +44,7 @@ def find_ids_in_source_file(file_name, id_to_file_names):
         if in_comment(source, m.start()):
             continue
         underscore_pos = m.group(0).index("_")
-        id = m.group(0)[0:underscore_pos]
+        id = m.group(0)[:underscore_pos]
         if id in id_to_file_names:
             id_to_file_names[id].append(file_name)
         else:
@@ -76,7 +76,7 @@ def fix_ids_in_source_file(file_name, id_to_count, available_ids):
         destination.extend(source[k:m.start()])
 
         underscore_pos = m.group(0).index("_")
-        id = m.group(0)[0:underscore_pos]
+        id = m.group(0)[:underscore_pos]
 
         # incorrect id or id has a duplicate somewhere
         if not in_comment(source, m.start()) and (len(id) != 4 or id[0] == "0" or id_to_count[id] > 1):
@@ -87,7 +87,7 @@ def fix_ids_in_source_file(file_name, id_to_count, available_ids):
         else:
             new_id = id
 
-        destination.extend(new_id + "_error")
+        destination.extend(f"{new_id}_error")
         k = m.end()
 
     destination.extend(source[k:])
